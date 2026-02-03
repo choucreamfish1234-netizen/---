@@ -4,8 +4,8 @@ import crypto from 'crypto';
 // Solapi API 설정
 const SOLAPI_API_KEY = process.env.SOLAPI_API_KEY || 'NCS1UJLHK1SISQ87';
 const SOLAPI_API_SECRET = process.env.SOLAPI_API_SECRET || '4T1I9QZ32KQBYSW1AYZPXY6R6BO2SDL7';
-const FROM_NUMBER = '01044521216'; // 발신번호
-const TO_NUMBER = '01048351216';   // 수신번호 (알림 받을 번호)
+const FROM_NUMBER = '01048351216'; // 발신번호 = 수신번호 (동일하게!)
+const TO_NUMBER = '01048351216';   // 수신번호
 
 // CORS 헤더
 const corsHeaders = {
