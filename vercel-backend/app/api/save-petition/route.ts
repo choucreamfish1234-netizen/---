@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 const SUPABASE_URL = 'https://ovwiifodraqeybuwxkyv.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im92d2lpZm9kcmFxZXlidXd4a3l2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzgwNjQwMTEsImV4cCI6MjA1MzY0MDAxMX0.6qoOcy5wHNnpZMgtH-0PgQJOPy4foGcM8db4I8mi3zA';
-
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im92d2lpZm9kcmFxZXlidXd4a3l2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjkzMDcxODMsImV4cCI6MjA4NDg4MzE4M30.dgL6q9U8IkS-wQfI3CKUr3Il2LFVCaAISsaHqcrcACU';
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
