@@ -5,6 +5,26 @@ import mammoth from 'mammoth';
 // Claude API 설정
 const CLAUDE_API_KEY = process.env.CLAUDE_API_KEY;
 
+// CORS 헤더
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type',
+};
+
+// OPTIONS 요청 처리 (CORS preflight)
+export async function OPTIONS() {
+  return NextResponse.json({}, { headers: corsHeaders });
+}
+
+// GET 요청 처리 (테스트용)
+export async function GET() {
+  return NextResponse.json(
+    { status: 'ok', message: 'API is working! Use POST to upload files.' },
+    { headers: corsHeaders }
+  );
+}
+
 // 거부 응답 감지
 function isRefusalResponse(text: string): boolean {
   const refusalPatterns = [
@@ -198,7 +218,7 @@ export async function POST(request: NextRequest) {
     if (!file) {
       return NextResponse.json(
         { error: 'NO_FILE', message: '파일이 없습니다.' },
-        { status: 400 }
+        { status: 400, headers: corsHeaders }
       );
     }
 
@@ -214,7 +234,7 @@ export async function POST(request: NextRequest) {
         error: 'UNSUPPORTED_FORMAT',
         message: '지원하지 않는 파일 형식입니다.',
         suggestion: '지원: PDF, 이미지, TXT, DOCX, HWP'
-      }, { status: 400 });
+      }, { status: 400, headers: corsHeaders });
     }
 
     const arrayBuffer = await file.arrayBuffer();
@@ -236,14 +256,14 @@ export async function POST(request: NextRequest) {
             error: 'SCANNED_PDF',
             message: '스캔된 PDF입니다.',
             suggestion: '이미지로 변환 후 다시 업로드해주세요.'
-          }, { status: 400 });
+          }, { status: 400, headers: corsHeaders });
         }
       } catch (pdfError) {
         console.error('PDF 파싱 오류:', pdfError);
         return NextResponse.json({
           error: 'PDF_PARSE_ERROR',
           message: 'PDF를 읽을 수 없습니다.'
-        }, { status: 400 });
+        }, { status: 400, headers: corsHeaders });
       }
     }
 
@@ -264,7 +284,7 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({
           error: 'EMPTY_FILE',
           message: '파일 내용이 비어있습니다.'
-        }, { status: 400 });
+        }, { status: 400, headers: corsHeaders });
       }
       
       summary = await analyzeText(extractedText);
@@ -281,7 +301,7 @@ export async function POST(request: NextRequest) {
           return NextResponse.json({
             error: 'EMPTY_FILE',
             message: 'Word 문서가 비어있습니다.'
-          }, { status: 400 });
+          }, { status: 400, headers: corsHeaders });
         }
         
         summary = await analyzeText(extractedText);
@@ -290,7 +310,7 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({
           error: 'DOCX_PARSE_ERROR',
           message: 'Word 파일을 읽을 수 없습니다.'
-        }, { status: 400 });
+        }, { status: 400, headers: corsHeaders });
       }
     }
 
@@ -302,7 +322,7 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({
           error: 'HWPX_NOT_SUPPORTED',
           message: 'HWPX는 PDF로 변환 후 업로드해주세요.'
-        }, { status: 400 });
+        }, { status: 400, headers: corsHeaders });
       }
       
       // HWP 바이너리에서 텍스트 추출 시도
@@ -329,7 +349,7 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({
           error: 'HWP_EXTRACT_FAILED',
           message: 'HWP 텍스트 추출 실패. PDF로 변환 후 업로드해주세요.'
-        }, { status: 400 });
+        }, { status: 400, headers: corsHeaders });
       }
       
       summary = await analyzeText(meaningfulText);
@@ -338,7 +358,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       success: true,
       summary: summary
-    });
+    }, { headers: corsHeaders });
 
   } catch (error: any) {
     console.error('API 오류:', error);
@@ -348,12 +368,12 @@ export async function POST(request: NextRequest) {
         error: 'ANALYSIS_REFUSED',
         message: 'AI가 분석을 완료하지 못했습니다.',
         suggestion: '문서 내용을 직접 입력해주세요.'
-      }, { status: 422 });
+      }, { status: 422, headers: corsHeaders });
     }
 
     return NextResponse.json({
       error: 'SERVER_ERROR',
       message: '서버 오류: ' + error.message
-    }, { status: 500 });
+    }, { status: 500, headers: corsHeaders });
   }
 }
