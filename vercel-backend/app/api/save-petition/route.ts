@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const SUPABASE_URL = process.env.SUPABASE_URL || 'https://ovwiifodraqeybuwxkyv.supabase.co';
-const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im92d2lpZm9kcmFxZXlidXd4a3l2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzgwNjQwMTEsImV4cCI6MjA1MzY0MDAxMX0.6qoOcy5wHNnpZMgtH-0PgQJOPy4foGcM8db4I8mi3zA';
+const SUPABASE_URL = 'https://ovwiifodraqeybuwxkyv.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im92d2lpZm9kcmFxZXlidXd4a3l2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzgwNjQwMTEsImV4cCI6MjA1MzY0MDAxMX0.6qoOcy5wHNnpZMgtH-0PgQJOPy4foGcM8db4I8mi3zA';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -61,6 +61,6 @@ export async function POST(request: NextRequest) {
   }
 }
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   return NextResponse.json({ success: true, message: 'save-petition API 작동 중' }, { headers: corsHeaders });
 }
